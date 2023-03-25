@@ -6,15 +6,12 @@ import { cartActions } from '../../store/cart-slice';
 const CartButton = (props) => {
 
   const dispatch=useDispatch()
-  const products=useSelector(state=>state.products);
+  const numberOfProduct=useSelector(state=>state.totalQuantity)
 
   const cartShowHandler=()=>{
     dispatch(cartActions.showCart())
   }
 
-  const numberOfProduct=products.reduce((currNumber,item)=>{
-    return currNumber=currNumber+item.quantity
-  },0)
   return (
     <button className={classes.button} onClick={cartShowHandler}>
       <span>My Cart</span>
