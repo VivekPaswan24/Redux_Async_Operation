@@ -1,11 +1,11 @@
-import axios from 'axios';
+
 import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
-import { uiActions } from './store/ui-slice';
+import { getCartData, sendCartDta } from './store/cart-slice';
 
 let render=true;
 function App() {
@@ -16,20 +16,12 @@ function App() {
   const dispatch=useDispatch()
 
   useEffect(()=>{
-    async function putdata(){
-      dispatch(uiActions.showNotification({status:'Pending',title:'Sending',message:'Sending cart data'}));
-      try{
-       await axios.put("https://react-http-71f81-default-rtdb.firebaseio.com/cart.json",{cart});
-       dispatch(uiActions.showNotification({status:'success',title:'Suceess',message:'Sent cart data successfully'}));
-      }catch(error){
-        dispatch(uiActions.showNotification({status:'error',title:'Error',message:'Seding cart data failed!'}));
-      }
-    }
     if(render===true){
       render=false ;
+      dispatch(getCartData())
       return;
     }
-    putdata()
+    dispatch(sendCartDta(cart))
   },[cart,dispatch]);
   return (
     <Fragment>
